@@ -7,8 +7,8 @@ import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 abstract class SingleUseCase<T> : UseCase() {
-    internal abstract fun buildUseCaseSingle(): Single<T>
-    fun execute(
+    internal abstract suspend fun buildUseCaseSingle(): Single<T>
+    suspend fun execute(
         onSuccess: ((t: T) -> Unit),
         onError: ((t: Throwable) -> Unit),
         onFinished: () -> Unit = {}
