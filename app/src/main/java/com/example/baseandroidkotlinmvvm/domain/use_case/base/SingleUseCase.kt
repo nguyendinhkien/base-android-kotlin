@@ -18,7 +18,6 @@ abstract class SingleUseCase<T> : UseCase() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterTerminate(onFinished)
-//            .subscribe(onSuccess, onError)
             .subscribeWith(object : CallBackWrapper<T>(){
                 override fun success(t: T) {
                     onSuccess.invoke(t)

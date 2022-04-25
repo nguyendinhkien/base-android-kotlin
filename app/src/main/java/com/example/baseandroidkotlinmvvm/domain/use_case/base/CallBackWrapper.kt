@@ -11,10 +11,6 @@ abstract class CallBackWrapper<T> : DisposableSingleObserver<T>() {
     protected abstract fun success(t: T)
     protected abstract fun throwError(t: Throwable)
 
-//    override fun onNext(t: T) {
-//        onSuccess(t)
-//    }
-
     override fun onSuccess(t: T) {
         success(t)
     }
