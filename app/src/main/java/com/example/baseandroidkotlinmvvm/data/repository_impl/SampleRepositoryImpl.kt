@@ -1,5 +1,6 @@
 package com.example.baseandroidkotlinmvvm.data.repository_impl
 
+import com.example.baseandroidkotlinmvvm.core.ErrorNetworkHandler
 import com.example.baseandroidkotlinmvvm.data.source.remote.ISampleApi
 import com.example.baseandroidkotlinmvvm.domain.model.SimpleResponse
 import com.example.baseandroidkotlinmvvm.domain.repository.ISampleRepository
@@ -8,8 +9,8 @@ import javax.inject.Inject
 
 class SampleRepositoryImpl @Inject constructor(
     private val api: ISampleApi
-): ISampleRepository {
+) : ISampleRepository {
     override suspend fun getSample(): Single<SimpleResponse> {
-        return api.getSample()
+        return api.getSample().compose(ErrorNetworkHandler<SimpleResponse>())
     }
 }

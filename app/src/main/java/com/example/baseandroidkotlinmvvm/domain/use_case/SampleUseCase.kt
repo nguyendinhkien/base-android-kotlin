@@ -12,4 +12,10 @@ class SampleUseCase @Inject constructor(
     override suspend fun buildUseCaseSingle(): Single<SimpleResponse> {
         return repository.getSample()
     }
+
+
+
+    fun saveParam(a: String){
+        return
+    }
 }

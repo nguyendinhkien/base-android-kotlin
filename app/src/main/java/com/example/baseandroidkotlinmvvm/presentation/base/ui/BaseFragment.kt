@@ -30,7 +30,10 @@ abstract class BaseFragment<B : ViewBinding>(bindingFactory: (LayoutInflater) ->
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
+        onViewReady(savedInstanceState)
     }
+
+    abstract fun onViewReady(savedInstanceState: Bundle?)
 
     protected fun <T> observeResultFromDestination(key: String, observeResult: (T) -> Unit): T? {
         var r: T? = null

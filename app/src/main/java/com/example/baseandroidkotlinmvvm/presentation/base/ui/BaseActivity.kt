@@ -20,6 +20,8 @@ abstract class BaseActivity<B : ViewBinding>(bindingFactory: (LayoutInflater) ->
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        onViewReady(savedInstanceState)
     }
 
+    abstract fun onViewReady(savedInstanceState: Bundle?)
 }
