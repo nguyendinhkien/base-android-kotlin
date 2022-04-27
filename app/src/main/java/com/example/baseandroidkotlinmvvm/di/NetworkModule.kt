@@ -3,6 +3,7 @@ package com.example.baseandroidkotlinmvvm.di
 import android.content.Context
 import com.example.baseandroidkotlinmvvm.data.repository_impl.SampleRepositoryImpl
 import com.example.baseandroidkotlinmvvm.data.source.remote.ISampleApi
+import com.example.baseandroidkotlinmvvm.domain.preferences.PrefsHelper
 import com.example.baseandroidkotlinmvvm.domain.repository.ISampleRepository
 import com.google.gson.Gson
 import dagger.Module
@@ -44,7 +45,8 @@ class NetworkModule {
     @Provides
     @Singleton
     fun providesOkHttpClient(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
+        prefsHelper: PrefsHelper
     ): OkHttpClient {
         val cacheSize = (5 * 1024 * 1024).toLong()
         val mCache = Cache(context.cacheDir, cacheSize)
@@ -59,12 +61,18 @@ class NetworkModule {
             .addInterceptor { chain ->
                 var request = chain.request()
                 request =
-                    if (true) request.newBuilder()
-                        .header("Cache-Control", "public, max-age=" + 5).build()
-                    else request.newBuilder().header(
-                        "Cache-Control",
-                        "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
-                    ).build()
+                    if (true) request
+                        .newBuilder()
+                        .header("Cache-Control", "public, max-age=" + 5)
+//                        .header("token", prefsHelper.readString("jjj", ""))
+                        .build()
+                    else request
+                        .newBuilder()
+                        .header(
+                            "Cache-Control",
+                            "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
+                        )
+                        .build()
                 chain.proceed(request)
             }
         return client.build()
