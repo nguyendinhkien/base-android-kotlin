@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.sample_ui.SampleFragment">
+    tools:context=".presentation.ui.navigation_test.screen_a.ScreenAFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Sample Screen" />
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

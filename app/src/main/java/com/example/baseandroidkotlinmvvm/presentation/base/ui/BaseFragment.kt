@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 
 abstract class BaseFragment<B : ViewBinding>(bindingFactory: (LayoutInflater) -> B) : Fragment() {
 
-    val binding: B by lazy { bindingFactory(layoutInflater) }
+    protected val binding: B by lazy { bindingFactory(layoutInflater) }
 
-    var hasNavController: Boolean = true
+//    var hasNavController: Boolean = true
 
-    lateinit var navController: NavController
+    private lateinit var navController: NavController
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,4 +27,27 @@ abstract class BaseFragment<B : ViewBinding>(bindingFactory: (LayoutInflater) ->
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
+    }
+
+    protected fun <T> observeResultFromDestination(key: String, observeResult: (T) -> Unit): T? {
+        var r: T? = null
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
+            ?.observe(viewLifecycleOwner) { result ->
+                r = result
+                observeResult(result)
+            }
+        return r
+    }
+
+    protected fun <T> returnData(key: String, result: T) {
+        navController.previousBackStackEntry?.savedStateHandle?.set(key, result)
+        /*
+        If you’d only like to handle a result only once, you must call remove()
+        //this.previousBackStackEntry?.savedStateHandle?.remove(key)
+        */
+
+    }
 }

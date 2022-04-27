@@ -8,15 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseActivity<B:ViewBinding>(bindingFactory: (LayoutInflater)-> B):AppCompatActivity() {
-    val binding: B by lazy { bindingFactory(layoutInflater) }
+abstract class BaseActivity<B : ViewBinding>(bindingFactory: (LayoutInflater) -> B) :
+    AppCompatActivity() {
+    protected val binding: B by lazy { bindingFactory(layoutInflater) }
 
-    lateinit var navController: NavController
+    protected lateinit var navController: NavController
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(binding.root)
     }
+
 }
