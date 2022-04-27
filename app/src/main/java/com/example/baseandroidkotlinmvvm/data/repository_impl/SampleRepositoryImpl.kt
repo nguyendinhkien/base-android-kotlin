@@ -11,6 +11,6 @@ class SampleRepositoryImpl @Inject constructor(
     private val api: ISampleApi
 ) : ISampleRepository {
     override suspend fun getSample(): Single<SimpleResponse> {
-        return api.getSample().compose(ErrorNetworkHandler<SimpleResponse>())
+        return api.getSample().compose(ErrorNetworkHandler())
     }
 }
