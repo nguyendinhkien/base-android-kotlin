@@ -10,7 +10,7 @@ import javax.inject.Inject
 class SampleRepositoryImpl @Inject constructor(
     private val api: ISampleApi
 ) : ISampleRepository {
-    override suspend fun getSample(): Single<SimpleResponse> {
-        return api.getSample().compose(ErrorNetworkHandler())
+    override fun getSample(): Single<SimpleResponse> {
+        return api.getSample()
     }
 }

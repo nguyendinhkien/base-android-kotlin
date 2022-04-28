@@ -9,7 +9,7 @@ import javax.inject.Inject
 class SampleUseCase @Inject constructor(
     private val repository: ISampleRepository
 ): SingleUseCase<SimpleResponse>() {
-    override suspend fun buildUseCaseSingle(): Single<SimpleResponse> {
+    override fun buildUseCaseSingle(): Single<SimpleResponse> {
         return repository.getSample()
     }
 

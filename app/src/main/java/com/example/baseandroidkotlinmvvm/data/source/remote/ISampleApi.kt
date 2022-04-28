@@ -5,6 +5,6 @@ import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 
 interface ISampleApi {
-    @GET
-    suspend fun getSample():Single<SimpleResponse>
+    @GET("echo")
+    fun getSample():Single<SimpleResponse>
 }
