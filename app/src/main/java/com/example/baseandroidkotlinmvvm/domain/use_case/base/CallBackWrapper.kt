@@ -1,9 +1,16 @@
 package com.example.baseandroidkotlinmvvm.domain.use_case.base
 
+import com.example.baseandroidkotlinmvvm.core.ErrorApiHandler
+import com.example.baseandroidkotlinmvvm.core.Failure
+import com.example.baseandroidkotlinmvvm.core.StatusCode
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.HttpException
+import java.io.IOException
+import java.lang.Exception
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 abstract class CallBackWrapper<T> : DisposableSingleObserver<T>() {
@@ -16,28 +23,53 @@ abstract class CallBackWrapper<T> : DisposableSingleObserver<T>() {
     }
 
     override fun onError(e: Throwable) {
-        when (e) {
-            is HttpException -> {
-                val response = e.response()?.errorBody()
-                response?.let {
-                    throwError(Throwable(message = getErrorMessage(response) ?: e.message()))
+        throwError(
+            try {
+                when {
+                    isConnectionTimeout(e) -> Failure(StatusCode.TIMEOUT, e.message ?: "")
+                    isRequestCanceled(e) -> Failure(
+                        StatusCode.REQUEST_CANCELED,
+                        e.message ?: ""
+                    )
+                    noInternetAvailable(e) -> Failure(
+                        StatusCode.NO_CONNECTION,
+                        e.message ?: ""
+                    )
+                    isHttpException(e) -> ErrorApiHandler.handleErrorOnNext(e)
+                    else -> Failure(StatusCode.UNKNOWN_ERROR, e.message ?: "")
                 }
+            } catch (e: Exception) {
+                Failure(StatusCode.UNKNOWN_ERROR, e.message ?: "")
             }
-            is UnknownHostException -> {
-                throwError(Throwable(message = "Network error"))
-            }
-            else -> {
-                throwError(Throwable(e.message))
-            }
-        }
+        )
+
     }
 
-    private fun getErrorMessage(responseBody: ResponseBody): String? {
-        return try {
-            val jsonObject = JSONObject(responseBody.string())
-            jsonObject.getString(("message"))
-        } catch (e: Exception) {
-            null
-        }
+    private fun isNetworkingError(throwable: Throwable): Boolean {
+        return isConnectionTimeout(throwable) ||
+                noInternetAvailable(throwable) ||
+                isRequestCanceled(throwable) ||
+                isConnectError(throwable) ||
+                isHttpException(throwable)
+    }
+
+    private fun isRequestCanceled(throwable: Throwable): Boolean {
+        return throwable is IOException && throwable.message == "Canceled"
+    }
+
+    private fun noInternetAvailable(throwable: Throwable): Boolean {
+        return throwable is UnknownHostException
+    }
+
+    private fun isConnectionTimeout(throwable: Throwable): Boolean {
+        return throwable is SocketTimeoutException
+    }
+
+    private fun isConnectError(throwable: Throwable): Boolean {
+        return throwable is ConnectException
+    }
+
+    private fun isHttpException(throwable: Throwable): Boolean {
+        return throwable is HttpException
     }
 }
