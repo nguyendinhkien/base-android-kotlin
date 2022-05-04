@@ -80,15 +80,18 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.13.0'
 
     //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.8.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
+    implementation ('com.squareup.retrofit2:retrofit:2.9.0'){
+        exclude module: 'okhttp'
+    }
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.1"
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
     //Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // optional - RxJava3 support for Room
-    implementation "androidx.room:room-rxjava3:$room_version"
+//    implementation "androidx.room:room-rxjava3:$room_version"
     // optional - Paging 3 Integration
     implementation "androidx.room:room-paging:2.5.0-alpha01"
 
@@ -100,9 +103,12 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     implementation "androidx.paging:paging-rxjava3:$paging_version"
 
-    //rx-java
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.2'
-    implementation "com.squareup.retrofit2:adapter-rxjava3:2.9.0"
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+
+//    //rx-java
+//    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+//    implementation 'io.reactivex.rxjava3:rxjava:3.0.2'
+//    implementation "com.squareup.retrofit2:adapter-rxjava3:2.9.0"
 
 }

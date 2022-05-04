@@ -15,7 +15,6 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -24,19 +23,22 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
-    private val BASE_URL = "https://reqbin.com/"
+    private val BASE_URL = "https://api.sampleapis.com/csscolornames/"
+
+    private val READ_TIMEOUT = 30
+    private val WRITE_TIMEOUT = 30
+    private val CONNECTION_TIMEOUT = 10
+    private val CACHE_SIZE_BYTES = 10 * 1024 * 1024L
 
     @Provides
     @Singleton
     fun providesRetrofit(
         gsonConverterFactory: GsonConverterFactory,
-        rxAdapter: RxJava3CallAdapterFactory,
         okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(gsonConverterFactory)
-            .addCallAdapterFactory(rxAdapter)
             .client(okHttpClient)
             .build()
     }
@@ -47,15 +49,14 @@ class NetworkModule {
         @ApplicationContext context: Context,
         prefsHelper: PrefsHelper
     ): OkHttpClient {
-        val cacheSize = (5 * 1024 * 1024).toLong()
-        val mCache = Cache(context.cacheDir, cacheSize)
+        val mCache = Cache(context.cacheDir, CACHE_SIZE_BYTES)
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
             .cache(mCache) // make your app offline-friendly without a database!
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
+            .writeTimeout(WRITE_TIMEOUT.toLong(), TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT.toLong(), TimeUnit.SECONDS)
             .addNetworkInterceptor(interceptor)
             .addInterceptor { chain ->
                 var request = chain.request()
@@ -88,12 +89,6 @@ class NetworkModule {
     @Singleton
     fun providesGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
-    }
-
-    @Provides
-    @Singleton
-    fun providesRxJavaCallAdapterFactory(): RxJava3CallAdapterFactory {
-        return RxJava3CallAdapterFactory.create()
     }
 
     @Provides

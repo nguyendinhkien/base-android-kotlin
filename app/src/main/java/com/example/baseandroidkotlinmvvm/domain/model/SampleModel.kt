@@ -6,9 +6,13 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "SAMPLE")
 class SampleModel {
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    @PrimaryKey(autoGenerate = false)
+    @SerializedName("id")
+    var id: Int? = null
 
-    @SerializedName("sample")
-    var sample: String? = null
+    @SerializedName("name")
+    var name: String? = null
+
+    @SerializedName("hex")
+    var hex: String? = null
 }
