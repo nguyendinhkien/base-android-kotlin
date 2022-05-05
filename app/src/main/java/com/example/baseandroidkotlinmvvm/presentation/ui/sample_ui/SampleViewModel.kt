@@ -26,8 +26,11 @@ class SampleViewModel @Inject constructor(
                 .onStart {
                     _uiState.value = SampleState.LoadingState
                 }
-                .collect {
-                    _uiState.value = SampleState.DataState(it)
+                .catch { exception ->
+                    _uiState.value = SampleState.ErrorState(Utils.resolveError(exception))
+                }
+                .collect { result ->
+                    _uiState.value = SampleState.DataState(result)
                 }
         }
     }

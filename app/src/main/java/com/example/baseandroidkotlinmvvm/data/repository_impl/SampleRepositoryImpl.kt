@@ -13,12 +13,10 @@ class SampleRepositoryImpl @Inject constructor(
     override suspend fun getSample(): Flow<List<SampleModel>> {
         return flow {
             val response = api.getSample()
-
             if (response.isSuccessful) {
                 val body = response.body()!!
                 emit(body)
             }
-
         }
     }
 }

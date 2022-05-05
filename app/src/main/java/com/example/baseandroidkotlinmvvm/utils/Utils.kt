@@ -10,7 +10,7 @@ import java.net.UnknownHostException
 
 class Utils {
     companion object {
-        fun resolveError(e: Exception): BaseState.ErrorState {
+        fun resolveError(e: Throwable): Throwable {
             var error = e
             when (e) {
                 is SocketTimeoutException -> {
@@ -34,7 +34,7 @@ class Utils {
                 }
             }
 
-            return BaseState.ErrorState(error)
+            return error
         }
     }
 }

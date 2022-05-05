@@ -15,12 +15,12 @@ class SampleFragment : BaseFragment<FragmentSampleBinding>(FragmentSampleBinding
     override fun onViewReady(savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             viewModel.uiState
-                .collect {
-                    when (it) {
+                .collect { state ->
+                    when (state) {
                         is SampleState.DataState -> binding.textSample.text =
-                            it.data.map { color -> color.name }.toString()
+                            state.data.map { color -> color.name }.toString()
                         is SampleState.ErrorState -> {
-                            showError()
+                            showError(state.error.message ?: "")
                         }
                         is SampleState.LoadingState -> {
                             showLoading()
