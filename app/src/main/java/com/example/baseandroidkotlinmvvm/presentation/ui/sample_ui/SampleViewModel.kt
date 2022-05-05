@@ -17,13 +17,15 @@ class SampleViewModel @Inject constructor(
     private val sampleUseCase: SampleUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SampleState.DataState(emptyList()))
+    private val _uiState = MutableStateFlow<SampleState>(SampleState.DataState(emptyList()))
     val uiState: StateFlow<SampleState> = _uiState
 
     init {
         viewModelScope.launch {
-//            _uiState.value = SampleState.LoadingState()
             sampleUseCase()
+                .onStart {
+                    _uiState.value = SampleState.LoadingState
+                }
                 .collect {
                     _uiState.value = SampleState.DataState(it)
                 }

@@ -57,4 +57,8 @@ abstract class BaseFragment<B : ViewBinding>(bindingFactory: (LayoutInflater) ->
     protected fun showLoading(){
 
     }
+
+    protected fun showError(){
+
+    }
 }
