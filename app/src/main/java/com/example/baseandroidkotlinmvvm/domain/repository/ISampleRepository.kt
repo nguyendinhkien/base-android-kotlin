@@ -7,5 +7,5 @@ import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.flow.Flow
 
 interface ISampleRepository {
-    suspend fun getSample(): Flow<List<SampleModel>>
+    suspend fun getSample(): Flow<BaseState<List<SampleModel>>>
 }

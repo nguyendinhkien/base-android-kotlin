@@ -3,6 +3,7 @@ package com.example.baseandroidkotlinmvvm.presentation.ui.sample_ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.baseandroidkotlinmvvm.domain.model.SampleModel
+import com.example.baseandroidkotlinmvvm.domain.repository.ISampleRepository
 import com.example.baseandroidkotlinmvvm.domain.use_case.SampleUseCase
 import com.example.baseandroidkotlinmvvm.presentation.base.ui.BaseState
 import com.example.baseandroidkotlinmvvm.utils.Utils
@@ -26,11 +27,12 @@ class SampleViewModel @Inject constructor(
                 .onStart {
                     _uiState.value = SampleState.LoadingState
                 }
-                .catch { exception ->
-                    _uiState.value = SampleState.ErrorState(Utils.resolveError(exception))
-                }
                 .collect { result ->
-                    _uiState.value = SampleState.DataState(result)
+                    when (result) {
+                        is BaseState.Failure -> _uiState.value =
+                            SampleState.ErrorState(result.error)
+                        is BaseState.Success -> _uiState.value = SampleState.DataState(result.data)
+                    }
                 }
         }
     }
