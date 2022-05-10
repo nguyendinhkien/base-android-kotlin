@@ -3,12 +3,9 @@ package com.example.baseandroidkotlinmvvm.presentation.ui.sample_ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.baseandroidkotlinmvvm.domain.model.SampleModel
-import com.example.baseandroidkotlinmvvm.domain.repository.ISampleRepository
 import com.example.baseandroidkotlinmvvm.domain.use_case.SampleUseCase
 import com.example.baseandroidkotlinmvvm.presentation.base.ui.BaseState
-import com.example.baseandroidkotlinmvvm.utils.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,15 +16,16 @@ class SampleViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SampleState>(SampleState.DataState(emptyList()))
-    val uiState: StateFlow<SampleState> = _uiState
+    val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
             sampleUseCase()
                 .onStart {
-                    _uiState.value = SampleState.LoadingState
+                    _uiState.value = SampleState.LoadingState(true)
                 }
                 .collect { result ->
+                    _uiState.value = SampleState.LoadingState(false)
                     when (result) {
                         is BaseState.Failure -> _uiState.value =
                             SampleState.ErrorState(result.error)
@@ -39,7 +37,7 @@ class SampleViewModel @Inject constructor(
 }
 
 sealed class SampleState {
-    object LoadingState : SampleState()
+    data class LoadingState(var isShowLoading: Boolean) : SampleState()
     data class ErrorState(var error: Throwable) : SampleState()
     data class DataState(var data: List<SampleModel>) : SampleState()
 }

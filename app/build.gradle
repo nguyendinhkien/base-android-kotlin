@@ -26,7 +26,7 @@ android {
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding true
     }
     compileOptions {
@@ -39,13 +39,16 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     def lifecycle_version = "2.5.0-beta01"
     def nav_version = "2.4.2"
     def preference_version = "1.2.0"
     def room_version = "2.4.2"
     def paging_version = "3.1.1"
+    def lottieVersion = "5.0.3"
 
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
@@ -68,7 +71,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-//    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -80,9 +82,10 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.13.0'
 
     //Retrofit
-    implementation ('com.squareup.retrofit2:retrofit:2.9.0'){
+    implementation('com.squareup.retrofit2:retrofit:2.9.0') {
         exclude module: 'okhttp'
     }
+
     implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.1"
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
@@ -90,8 +93,7 @@ dependencies {
     //Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-    // optional - RxJava3 support for Room
-//    implementation "androidx.room:room-rxjava3:$room_version"
+
     // optional - Paging 3 Integration
     implementation "androidx.room:room-paging:2.5.0-alpha01"
 
@@ -106,9 +108,8 @@ dependencies {
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
 
-//    //rx-java
-//    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-//    implementation 'io.reactivex.rxjava3:rxjava:3.0.2'
-//    implementation "com.squareup.retrofit2:adapter-rxjava3:2.9.0"
+    //Lottie animation
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
 
 }

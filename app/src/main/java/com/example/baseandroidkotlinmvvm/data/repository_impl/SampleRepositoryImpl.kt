@@ -12,9 +12,7 @@ import javax.inject.Inject
 class SampleRepositoryImpl @Inject constructor(
     private val api: ISampleApi
 ) : ISampleRepository {
-    override suspend fun getSample(): Flow<BaseState<List<SampleModel>>> {
-        return safeCallApi {
-            api.getSample()
-        }
+    override suspend fun getSample() = safeCallApi {
+        api.getSample()
     }
 }

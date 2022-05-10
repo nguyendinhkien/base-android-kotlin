@@ -91,15 +91,19 @@ class NetworkModule {
         return GsonConverterFactory.create()
     }
 
+
+    //di API
     @Provides
     @Singleton
     fun providesSampleApi(retrofit: Retrofit): ISampleApi {
         return retrofit.create(ISampleApi::class.java)
     }
 
+    //di REPOSITORY
     @Provides
     @Singleton
     fun providesSampleRepository(api: ISampleApi): ISampleRepository {
         return SampleRepositoryImpl(api)
     }
+
 }

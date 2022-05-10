@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.example.baseandroidkotlinmvvm.utils.LoadingUtils
 
 abstract class BaseFragment<B : ViewBinding>(bindingFactory: (LayoutInflater) -> B) : Fragment() {
 
@@ -55,11 +56,15 @@ abstract class BaseFragment<B : ViewBinding>(bindingFactory: (LayoutInflater) ->
 
     }
 
-    protected fun showLoading(){
-        Toast.makeText(context, "Loading...", Toast.LENGTH_LONG).show()
+    protected fun showLoading(showLoading: Boolean) {
+        if (showLoading) {
+            LoadingUtils.showLoading(context, false)
+        } else {
+            LoadingUtils.hideLoading()
+        }
     }
 
-    protected fun showError(message: String){
+    protected fun showError(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }
