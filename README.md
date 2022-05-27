@@ -1,1 +1,1 @@
-# base-android-kotlin-mvvm
+# base-android-kotlin-mvi

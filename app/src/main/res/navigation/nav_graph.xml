@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/sampleFragment"
-        android:name="com.example.baseandroidkotlinmvvm.presentation.ui.sample_ui.SampleFragment"
+        android:name="com.example.baseandroidkotlinmvi.presentation.ui.sample_ui.SampleFragment"
         android:label="fragment_sample"
         tools:layout="@layout/fragment_sample" >
         <action
@@ -18,7 +18,7 @@
         app:startDestination="@id/screenAFragment">
         <fragment
             android:id="@+id/screenAFragment"
-            android:name="com.example.baseandroidkotlinmvvm.presentation.ui.navigation_test.screen_a.ScreenAFragment"
+            android:name="com.example.baseandroidkotlinmvi.presentation.ui.navigation_test.screen_a.ScreenAFragment"
             android:label="fragment_screen_a"
             tools:layout="@layout/fragment_screen_a">
             <action
@@ -27,13 +27,13 @@
         </fragment>
         <fragment
             android:id="@+id/screenBFragment"
-            android:name="com.example.baseandroidkotlinmvvm.presentation.ui.navigation_test.screen_b.ScreenBFragment"
+            android:name="com.example.baseandroidkotlinmvi.presentation.ui.navigation_test.screen_b.ScreenBFragment"
             android:label="fragment_screen_b"
             tools:layout="@layout/fragment_screen_b" />
     </navigation>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.baseandroidkotlinmvvm.presentation.ui.login.LoginFragment"
+        android:name="com.example.baseandroidkotlinmvi.presentation.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
 </navigation>
