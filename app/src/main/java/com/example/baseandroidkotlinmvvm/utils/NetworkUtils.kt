@@ -60,9 +60,8 @@ suspend fun <T : Any> safeCallApi(
         emit(
             BaseState.Failure(
                 NetworkErrorException(
-                    errorMessage = "API call failed with error: ${
-                        response.errorBody()?.toString()
-                    }"
+                    errorCode = response.code(),
+                    errorMessage = response.message()
                 )
             )
         )

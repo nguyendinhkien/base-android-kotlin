@@ -1,6 +1,8 @@
 package com.example.baseandroidkotlinmvvm.presentation.base.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.example.baseandroidkotlinmvvm.utils.LoadingUtils
 
-abstract class BaseFragment<B : ViewBinding>(bindingFactory: (LayoutInflater) -> B) : Fragment() {
+abstract class BaseFragment<B : ViewBinding>(bindingFactory: (LayoutInflater) -> B) : Fragment(){
 
     protected val binding: B by lazy { bindingFactory(layoutInflater) }
 
